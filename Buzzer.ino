@@ -1,10 +1,5 @@
 #include "Buzzer.h"
 
-void Buzzer::Setup()
-{
-    pinMode(pin_, OUTPUT);
-}
-
 void Buzzer::Buzz(unsigned char beep_count, int time)
 {
     int tom = 1000;
@@ -13,10 +8,10 @@ void Buzzer::Buzz(unsigned char beep_count, int time)
     
     while (tempo_gasto < tempo_value)
     {
-        digitalWrite(pin_, HIGH);
+        Pin::On();
         delayMicroseconds(tom / 2);
  
-        digitalWrite(pin_, LOW);
+        Pin::Off();
         delayMicroseconds(tom/2);
  
         tempo_gasto += tom;
@@ -28,9 +23,9 @@ void Buzzer::Click()
 {
     int time = 100;
     
-    digitalWrite(pin_, HIGH);
+    Pin::On();
     delay (time);
-    digitalWrite(pin_, LOW);
+    Pin::Off();
     delay(100);
 }
 

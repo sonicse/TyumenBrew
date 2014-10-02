@@ -10,9 +10,10 @@ const unsigned char button_start_pin = 16;
 const unsigned char button_enter_pin = 17;
 
 // outputs
-const unsigned char pump_pin = 36;
+const unsigned char pump_pin = 32;
 const unsigned char buzzer_pin = 38;
-const unsigned char heat_pin = 34;
+const unsigned char heater_big_pin = 34;
+const unsigned char heater_small_pin = 30;
 
 //led
 const unsigned char led1_pin = 28;

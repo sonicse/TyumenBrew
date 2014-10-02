@@ -2,12 +2,16 @@
 #include <OneWire.h>
 #include <EEPROM.h>
 
+#include <vector>
+
 #include "Config.h"
 #include "Thermometer.h"
 #include "Buzzer.h"
 #include "Button.h"
 #include "Lcd.h"
-#include "Eep.h"
+#include "Led.h"
+#include "Heater.h"
+//#include "Eep.h"
 //#include "Pid.h"
 
 ////////////////////////////////////////////////
@@ -21,6 +25,11 @@ Button gButtonUp(button_up_pin);
 Button gButtonDown(button_down_pin);
 Button gButtonStart(button_start_pin);
 Button gButtonEnter(button_enter_pin);
+
+Led gLedRed(led1_pin);
+Heater gHeaterBig(heater_big_pin, &gLedRed);
+Led gLedGreen(led2_pin);
+Heater gHeaterSmall(heater_small_pin, &gLedGreen);
 
 void setup ()
 {
@@ -36,6 +45,10 @@ void setup ()
     gButtonStart.Setup();
     gButtonEnter.Setup();
     
+    gLedRed.Setup();
+    gHeaterBig.Setup();
+    gLedGreen.Setup();
+    gHeaterSmall.Setup();
     gBuzzer.Test();
 }
 
@@ -43,8 +56,8 @@ void loop ()
 {
     if (gButtonUp.IsPressed(100)) {gBuzzer.Click();}
     if (gButtonDown.IsPressed(100)) {gBuzzer.Click();}
-    if (gButtonStart.IsPressed(100)) {gBuzzer.Click();}
-    if (gButtonEnter.IsPressed(100)) {gBuzzer.Click();}
+    if (gButtonStart.IsPressed(100)) {gHeaterBig.Toggle();}
+    if (gButtonEnter.IsPressed(100)) {gHeaterSmall.Toggle();}
     
     gLcd.PrintMenuDefault(0.0);
 }
