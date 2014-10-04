@@ -25,10 +25,19 @@ void Pin::Off()
 
 void Pin::Toggle()
 {
+  Serial.println("Pin::Toggle");
+  
+  state_ = !state_;
+  
   if (state_) {
     On();
   }
   else {
     Off();
   }
+}
+
+boolean Pin::GetState() const
+{
+  return state_;
 }

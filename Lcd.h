@@ -3,7 +3,9 @@
 
 #include <LiquidCrystal.h>
 
-class Lcd
+#include "Base.h"
+
+class Lcd : public Base
 {
 public:
   Lcd(unsigned char pin1, unsigned char pin2, unsigned char pin3, unsigned char pin4, unsigned char pin5, unsigned char pin6) :lcd_(pin1, pin2, pin3, pin4, pin5, pin6) {};

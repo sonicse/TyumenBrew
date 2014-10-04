@@ -1,8 +1,9 @@
+
 #include <LiquidCrystal.h>
 #include <OneWire.h>
 #include <EEPROM.h>
 
-#include <vector>
+//#include <vector>
 
 #include "Config.h"
 #include "Thermometer.h"
@@ -11,6 +12,7 @@
 #include "Lcd.h"
 #include "Led.h"
 #include "Heater.h"
+#include "Pump.h"
 //#include "Eep.h"
 //#include "Pid.h"
 
@@ -31,31 +33,38 @@ Heater gHeaterBig(heater_big_pin, &gLedRed);
 Led gLedGreen(led2_pin);
 Heater gHeaterSmall(heater_small_pin, &gLedGreen);
 
+Led gLedYellow(led3_pin);
+Pump gPump(pump_pin, &gLedYellow);
+
+const unsigned char gDevicesCount = 13;
+Base* gDevices[gDevicesCount] = {&gThermometer, &gLcd, &gBuzzer, &gButtonUp, &gButtonDown, &gButtonStart, &gButtonEnter, &gLedRed, &gHeaterBig, &gLedGreen, &gHeaterSmall, &gLedYellow, &gPump};
+
 void setup ()
 {
     Serial.begin(9600);
     Serial.println("setup");
     
-    gThermometer.Setup();
-    gLcd.Setup();
-    gBuzzer.Setup();
+    for (unsigned char i = 0; i < gDevicesCount; ++i)
+    {
+      gDevices[i]->Setup();
+    }
     
-    gButtonUp.Setup();
-    gButtonDown.Setup();
-    gButtonStart.Setup();
-    gButtonEnter.Setup();
-    
-    gLedRed.Setup();
-    gHeaterBig.Setup();
-    gLedGreen.Setup();
-    gHeaterSmall.Setup();
     gBuzzer.Test();
 }
 
 void loop ()
 {
+    for (unsigned char i = 0; i < gDevicesCount; ++i)
+    {
+      gDevices[i]->Loop();
+    }
+    
     if (gButtonUp.IsPressed(100)) {gBuzzer.Click();}
-    if (gButtonDown.IsPressed(100)) {gBuzzer.Click();}
+    if (gButtonDown.IsPressed(100))
+    {
+        gBuzzer.Click();
+        gLedYellow.Toggle();
+    }
     if (gButtonStart.IsPressed(100)) {gHeaterBig.Toggle();}
     if (gButtonEnter.IsPressed(100)) {gHeaterSmall.Toggle();}
     

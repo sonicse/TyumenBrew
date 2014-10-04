@@ -13,6 +13,7 @@ void Heater::SetLed(Led *led)
 
 void Heater::On()
 {
+  Serial.println("Heater::On");
   Pin::On();
   
   if (led_) led_->On();
@@ -20,6 +21,7 @@ void Heater::On()
 
 void Heater::Off()
 {
+  Serial.println("Heater::Off");
   Pin::Off();
   
   if (led_) led_->Off();

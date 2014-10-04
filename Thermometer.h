@@ -3,14 +3,14 @@
 
 #include <OneWire.h>
 
-//#include "Eep.h"
+#include "Base.h"
 
-class Thermometer
+class Thermometer : public Base
 {
 public:
   Thermometer(unsigned char pin);
 
-  void Setup();
+  virtual void Setup();
   float Temperature();
   
 private:

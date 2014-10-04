@@ -61,7 +61,7 @@ void Lcd::PrintMenuDefault(float temperature)
     lcd_.setCursor(1,3);
     lcd_ .print(F("---  MAN AUTO SETUP"));
     
-    //PrintVersion(lcd, 7,1);
+    PrintVersion(12,0);
 }
 
 void Lcd::PrintMenuManual()

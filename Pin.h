@@ -1,17 +1,21 @@
 #ifndef PIN_H
 #define PIN_H
 
-class Pin
+#include "Base.h"
+
+class Pin : public Base
 {
 public:
   Pin(unsigned char pin);
-  virtual ~Pin() {};
   
+  //Base
   virtual void Setup();
   
   virtual void On();
   virtual void Off();
   virtual void Toggle();
+  
+  boolean GetState() const;
   
 protected:
   unsigned char pin_;

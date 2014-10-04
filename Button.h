@@ -1,7 +1,9 @@
 #ifndef BUTTON_H
 #define BUTTON_H
- 
-class Button
+
+#include "Base.h"
+
+class Button : public Base
 {
 public:
   Button(unsigned char pin) :pin_(pin) {};
