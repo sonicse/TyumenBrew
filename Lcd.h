@@ -21,6 +21,8 @@ public:
   void PrintMenuManual();
   void PrintOkExit();
   void PrintPromptForWater();
+  
+  void PrintTest(float temperature, boolean pump_state, boolean heater_big_state, boolean heater_small_state);
 
 private:
     LiquidCrystal lcd_;

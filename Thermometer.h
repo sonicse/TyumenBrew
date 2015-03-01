@@ -11,6 +11,8 @@ public:
   Thermometer(unsigned char pin);
 
   virtual void Setup();
+  virtual void Loop();
+  
   float Temperature();
   
 private:

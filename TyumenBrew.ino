@@ -15,6 +15,7 @@
 #include "Pump.h"
 //#include "Eep.h"
 //#include "Pid.h"
+#include "TempRestHolder.h"
 
 ////////////////////////////////////////////////
 // Variables
@@ -36,37 +37,51 @@ Heater gHeaterSmall(heater_small_pin, &gLedGreen);
 Led gLedYellow(led3_pin);
 Pump gPump(pump_pin, &gLedYellow);
 
-const unsigned char gDevicesCount = 13;
-Base* gDevices[gDevicesCount] = {&gThermometer, &gLcd, &gBuzzer, &gButtonUp, &gButtonDown, &gButtonStart, &gButtonEnter, &gLedRed, &gHeaterBig, &gLedGreen, &gHeaterSmall, &gLedYellow, &gPump};
+TempRestHolder gTempRestHolder(&gThermometer, &gHeaterBig);
+
+Base* gDevices[] = {
+  &gThermometer, &gLcd, &gBuzzer, &gButtonUp, &gButtonDown, &gButtonStart, &gButtonEnter, &gLedRed, &gHeaterBig, &gLedGreen, &gHeaterSmall, &gLedYellow, &gPump};
+const unsigned char gDevicesCount = sizeof(gDevices);
 
 void setup ()
 {
-    Serial.begin(9600);
-    Serial.println("setup");
-    
-    for (unsigned char i = 0; i < gDevicesCount; ++i)
-    {
-      gDevices[i]->Setup();
-    }
-    
-    gBuzzer.Test();
+  Serial.begin(9600);
+  Serial.println("setup");
+
+  for (unsigned char i = 0; i < gDevicesCount; ++i)
+  {
+    gDevices[i]->Setup();
+  }
+
+  gBuzzer.Test();
 }
 
 void loop ()
 {
-    for (unsigned char i = 0; i < gDevicesCount; ++i)
-    {
-      gDevices[i]->Loop();
-    }
-    
-    if (gButtonUp.IsPressed(100)) {gBuzzer.Click();}
-    if (gButtonDown.IsPressed(100))
-    {
-        gBuzzer.Click();
-        gLedYellow.Toggle();
-    }
-    if (gButtonStart.IsPressed(100)) {gHeaterBig.Toggle();}
-    if (gButtonEnter.IsPressed(100)) {gHeaterSmall.Toggle();}
-    
-    gLcd.PrintMenuDefault(0.0);
+  for (unsigned char i = 0; i < gDevicesCount; ++i)
+  {
+    gDevices[i]->Loop();
+  }
+
+  if (gButtonUp.IsPressed(100)) {
+    gBuzzer.Click();
+  }
+
+  if (gButtonDown.IsPressed(100)) {
+    gPump.Toggle();
+    gBuzzer.Click();
+  }
+
+  if (gButtonStart.IsPressed(100)) {
+    gHeaterBig.Toggle();
+    gBuzzer.Click();
+  }
+
+  if (gButtonEnter.IsPressed(100)) {
+    gHeaterSmall.Toggle();
+    gBuzzer.Click();
+  }
+
+  gLcd.PrintTest(gThermometer.Temperature(), gPump.GetState(), gHeaterBig.GetState(), gHeaterSmall.GetState());
 }
+

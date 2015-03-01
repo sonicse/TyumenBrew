@@ -11,6 +11,11 @@ void Thermometer::Setup()
 {
 }
 
+void Thermometer::Loop()
+{
+//  Temperature();
+}
+
 // reads the DS18B20 temerature probe
 // return always gTemperatureNow
 float Thermometer::Temperature()
