@@ -16,6 +16,7 @@ public:
   
   void On();
   void Off();
+  void Toggle();
   
   boolean GetState() const;
   
@@ -23,14 +24,14 @@ public:
   virtual void Setup();
   virtual void Loop();
   
-private:
-  void Process();
+protected:
+  virtual void Process();
   void HeaterToggle(boolean flag);
   
   Thermometer *thermometer_;
   Heater *heater_;
   
-  float temperature_;
+  double temperature_;
   float delta_;
   boolean state_;
 };

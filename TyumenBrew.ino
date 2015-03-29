@@ -2,8 +2,7 @@
 #include <LiquidCrystal.h>
 #include <OneWire.h>
 #include <EEPROM.h>
-
-//#include <vector>
+#include <PID_v1.h>
 
 #include "Config.h"
 #include "Thermometer.h"
@@ -14,8 +13,7 @@
 #include "Heater.h"
 #include "Pump.h"
 //#include "Eep.h"
-//#include "Pid.h"
-#include "TempRestHolder.h"
+#include "PidTempHolder.h"
 
 ////////////////////////////////////////////////
 // Variables
@@ -37,7 +35,8 @@ Heater gHeaterSmall(heater_small_pin, &gLedGreen);
 Led gLedYellow(led3_pin);
 Pump gPump(pump_pin, &gLedYellow);
 
-TempRestHolder gTempRestHolder(&gThermometer, &gHeaterBig);
+PidTempHolder gTempHolder(&gThermometer, &gHeaterBig);
+gRestHolder.SetTemperature(67);
 
 Base* gDevices[] = {
   &gThermometer, &gLcd, &gBuzzer, &gButtonUp, &gButtonDown, &gButtonStart, &gButtonEnter, &gLedRed, &gHeaterBig, &gLedGreen, &gHeaterSmall, &gLedYellow, &gPump};
@@ -61,6 +60,7 @@ void loop ()
   for (unsigned char i = 0; i < gDevicesCount; ++i)
   {
     gDevices[i]->Loop();
+    gTempHolder.Toggle();
   }
 
   if (gButtonUp.IsPressed(100)) {

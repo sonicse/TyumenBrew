@@ -40,6 +40,18 @@ void TempRestHolder::Off()
   
   HeaterToggle(false);
 }
+
+void TempRestHolder::Toggle()
+{
+  state_ = !state_;
+  
+  if (state_) {
+    On();
+  }
+  else {
+    Off();
+  }
+}
   
 boolean TempRestHolder::GetState() const
 {
