@@ -89,28 +89,27 @@ void Lcd::PrintPromptForWater()
 
 void Lcd::PrintTest(float temperature, boolean pump_state, boolean heater_big_state, boolean heater_small_state)
 {
-  lcd_.clear();
-  
   // Temperature
+  PrintLineSpace(0);
   lcd_.setCursor(0,0);
   lcd_.print(F("Temperature: "));
   PrintTemperature(temperature);
   
   // Pump
+  PrintLineSpace(1);
   lcd_.setCursor(0,1);
   lcd_.print(F("Pump: "));
   lcd_.print((pump_state) ? F("On") : F("Off"));
   
   // Heater Big
+  PrintLineSpace(2);
   lcd_.setCursor(0,2);
   lcd_.print(F("Heater Big: "));
   lcd_.print((heater_big_state) ? F("On") : F("Off"));
   
   // Heater Small
+  PrintLineSpace(3);
   lcd_.setCursor(0,3);
   lcd_.print(F("Heater Small: "));
   lcd_.print((heater_small_state) ? F("On") : F("Off"));
-  
-  //lcd_.setCursor(1,3);
-  //lcd_ .print(F("---  Pump HeatB HeatS"));
 }

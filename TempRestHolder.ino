@@ -3,7 +3,9 @@
 #include "Heater.h"
 #include "Thermometer.h"
 
-const float kDefaultDelta = 1.0;
+namespace {
+ const float kDefaultDelta = 1.0;
+}
 
 TempRestHolder::TempRestHolder(Thermometer *thermometer, Heater *heater)
 :thermometer_(thermometer)
@@ -11,8 +13,9 @@ TempRestHolder::TempRestHolder(Thermometer *thermometer, Heater *heater)
 ,temperature_(0.0)
 ,delta_(kDefaultDelta)
 ,state_(false)
-{}
-  
+{
+}
+
 void TempRestHolder::SetTemperature(float temperature)
 {
   temperature_ = temperature;
@@ -29,6 +32,7 @@ void TempRestHolder::SetDelta(float delta)
   
 void TempRestHolder::On()
 {
+  Serial.println("TempRestHolder::On");
   state_ = true;
   
   Process();
@@ -36,6 +40,7 @@ void TempRestHolder::On()
 
 void TempRestHolder::Off()
 {
+  Serial.println("TempRestHolder::Off");
   state_ = false;
   
   HeaterToggle(false);
@@ -82,10 +87,10 @@ void TempRestHolder::HeaterToggle(boolean flag)
 {
   if (flag)
   {
-    if (heater_) heater_->On();
+    if (heater_ && !heater_->GetState()) heater_->On();
   }
   else
   {
-    if (heater_) heater_->Off();
+    if (heater_ && heater_->GetState()) heater_->Off();
   }
 }

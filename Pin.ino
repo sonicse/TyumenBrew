@@ -25,8 +25,6 @@ void Pin::Off()
 
 void Pin::Toggle()
 {
-  Serial.println("Pin::Toggle");
-  
   state_ = !state_;
   
   if (state_) {

@@ -29,6 +29,8 @@ public:
 private:
   void Process()
   {
+    if (!state_) return;
+    
     if (auto_mode_)
     {
       float temperature = (thermometer_) ? thermometer_->Temperature() : 0.0;
@@ -36,6 +38,9 @@ private:
       if ((temperature_ - temperature) < delta_pid_ * 1.2)
       {
         pid_.Compute();
+        char tmp[128];
+        sprintf(tmp, "pid.Compute - %0.2f", output_);
+        Serial.println(tmp);
       }
       else if ((temperature_ - temperature) > delta_pid_)
       {

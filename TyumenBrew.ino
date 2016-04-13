@@ -35,12 +35,11 @@ Heater gHeaterSmall(heater_small_pin, &gLedGreen);
 Led gLedYellow(led3_pin);
 Pump gPump(pump_pin, &gLedYellow);
 
-PidTempHolder gTempHolder(&gThermometer, &gHeaterBig);
-gRestHolder.SetTemperature(67);
+TempRestHolder gTempHolder(&gThermometer, &gHeaterBig);
 
 Base* gDevices[] = {
-  &gThermometer, &gLcd, &gBuzzer, &gButtonUp, &gButtonDown, &gButtonStart, &gButtonEnter, &gLedRed, &gHeaterBig, &gLedGreen, &gHeaterSmall, &gLedYellow, &gPump};
-const unsigned char gDevicesCount = sizeof(gDevices);
+  &gThermometer, &gLcd, &gBuzzer, &gButtonUp, &gButtonDown, &gButtonStart, &gButtonEnter, &gLedRed, &gHeaterBig, &gLedGreen, &gHeaterSmall, &gLedYellow, &gPump, &gTempHolder};
+const unsigned char gDevicesCount = sizeof(gDevices)/sizeof(gDevices[0]);
 
 void setup ()
 {
@@ -53,6 +52,8 @@ void setup ()
   }
 
   gBuzzer.Test();
+  
+  gTempHolder.SetTemperature(45.0);
 }
 
 void loop ()
@@ -60,10 +61,10 @@ void loop ()
   for (unsigned char i = 0; i < gDevicesCount; ++i)
   {
     gDevices[i]->Loop();
-    gTempHolder.Toggle();
   }
 
   if (gButtonUp.IsPressed(100)) {
+    gTempHolder.Toggle();
     gBuzzer.Click();
   }
 

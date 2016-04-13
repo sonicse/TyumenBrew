@@ -14,7 +14,6 @@ bool Button::IsPressed(int time)
         if (digitalRead(pin_) == HIGH)
         {
             while(digitalRead(pin_) == HIGH) {}
-            //Click();
             
             Serial.println("Button Pressed");
             

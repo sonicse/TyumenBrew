@@ -16,7 +16,7 @@ void Buzzer::Buzz(unsigned char beep_count, int time)
  
         tempo_gasto += tom;
     }
-    delayMicroseconds(1000); //pausa entre notas!
+    delayMicroseconds(1000);
 }
 
 void Buzzer::Click()
