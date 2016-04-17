@@ -7,13 +7,18 @@ namespace {
  const float kDefaultDelta = 1.0;
 }
 
-TempRestHolder::TempRestHolder(Thermometer *thermometer, Heater *heater)
+TempRestHolder::TempRestHolder(Thermometer *thermometer, Pin *heater)
 :thermometer_(thermometer)
 ,heater_(heater)
 ,temperature_(0.0)
 ,delta_(kDefaultDelta)
 ,state_(false)
 {
+}
+
+float TempRestHolder::GetTemperature() const
+{
+  return temperature_;
 }
 
 void TempRestHolder::SetTemperature(float temperature)

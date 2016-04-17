@@ -1,6 +1,6 @@
 #include "Pin.h"
 
-Pin::Pin(unsigned char pin) : pin_(pin), state_(false)
+Pin::Pin(unsigned char pin) : pin_(pin)
 {
 }
 
@@ -9,33 +9,32 @@ void Pin::Setup()
   pinMode(pin_, OUTPUT);
 }
 
-void Pin::On()
+void Pin::OnStateChanged()
 {
-  digitalWrite(pin_, HIGH);
-  
-  state_ = true;
-}
-
-void Pin::Off()
-{
-  digitalWrite(pin_, LOW);
-  
-  state_ = false;
-}
-
-void Pin::Toggle()
-{
-  state_ = !state_;
-  
-  if (state_) {
-    On();
+  if (GetState()) {
+    digitalWrite(pin_, HIGH);
   }
   else {
-    Off();
+    digitalWrite(pin_, LOW);
   }
 }
 
-boolean Pin::GetState() const
+PinLed::PinLed(unsigned char pin, Led *led /*= NULL*/)
+:Pin(pin)
+,led_(led)
 {
-  return state_;
+}
+
+void PinLed::SetLed(Led *led)
+{
+  led_ = led;
+  
+  if (led_) led_->SetState(GetState());
+}
+
+void PinLed::OnStateChanged()
+{
+  Pin::OnStateChanged();
+  
+  if (led_) led_->SetState(GetState());
 }

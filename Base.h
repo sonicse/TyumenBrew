@@ -10,23 +10,25 @@ class Base
   virtual void Loop() {};
 };
 
-class Pin : public Base
+class State
 {
 public:
-  Pin(unsigned char pin);
-  
-  //Base
-  virtual void Setup();
-  
-  virtual void On();
-  virtual void Off();
-  virtual void Toggle();
-  
+  State(boolean state = false);
+  virtual ~State() {};
+
   boolean GetState() const;
+  void SetState(boolean state);
+
+  void On();
+  void Off();
+  void Toggle();
   
 protected:
-  unsigned char pin_;
+  virtual void OnStateChanged() {};
+
   boolean state_;
 };
+
+
 
 #endif

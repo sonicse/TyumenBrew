@@ -1,29 +1,26 @@
 #ifndef PUMPCONTROLLER_H
 #define PUMPCONTROLLER_H
 
-#include "Pump.h"
-
-class Heater;
-
-class PumpController : public Base
+class PumpController : public Base, public State
 {
 public:
-  PumpController(Pump &pump, Heater *heater = NULL);
+  PumpController(Pin &pump, Pin &heater_big, Pin &heater_small);
   
-  void On();
-  void Off();
-  void Toggle();
-
+  void Prepare();
+  unsigned long GetTime() const;
+  
   /*Base*/
   virtual void Setup();
   virtual void Loop();
   
 private:
-  void Process(){};
+  virtual void OnStateChanged();
   
-  Pump &pump_;
-  Heater *heater_;
-  boolean state_;
+  Pin &pump_;
+  Pin &heater_big_;
+  Pin &heater_small_;
+  
+  unsigned long time_start_;
 };
 
 #endif

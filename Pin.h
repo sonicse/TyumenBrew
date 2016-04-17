@@ -3,7 +3,9 @@
 
 #include "Base.h"
 
-class Pin : public Base
+class Led;
+
+class Pin : public Base, public State
 {
 public:
   Pin(unsigned char pin);
@@ -11,15 +13,24 @@ public:
   //Base
   virtual void Setup();
   
-  virtual void On();
-  virtual void Off();
-  virtual void Toggle();
-  
-  boolean GetState() const;
-  
 protected:
   unsigned char pin_;
-  boolean state_;
+  
+  //State
+  virtual void OnStateChanged();
+};
+
+class PinLed : public Pin
+{
+public:
+  PinLed(unsigned char pin, Led *led = NULL);
+
+  void SetLed(Led *led);
+
+protected:
+  virtual void OnStateChanged();
+  
+  Led *led_;
 };
 
 #endif //PIN_H
