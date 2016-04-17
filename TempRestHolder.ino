@@ -1,10 +1,9 @@
 #include "TempRestHolder.h"
 
-#include "Heater.h"
 #include "Thermometer.h"
 
 namespace {
- const float kDefaultDelta = 1.0;
+ const float kDefaultDelta = 0.5;
 }
 
 TempRestHolder::TempRestHolder(Thermometer *thermometer, Pin *heater)
