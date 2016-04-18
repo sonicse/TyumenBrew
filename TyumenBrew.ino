@@ -53,7 +53,6 @@ void setup ()
   }
 
   gBuzzer.Test();
-  gTempHolder.SetTemperature(67.0);
   gLcd.SetDevices(&gTempHolder);
 }
 

@@ -5,7 +5,8 @@ PumpController::PumpController(Pin &pump, Pin &heater_big, Pin &heater_small)
 ,heater_big_(heater_big)
 ,heater_small_(heater_small)
 ,time_start_(0)
-{}
+{
+}
   
 void PumpController::Setup()
 {

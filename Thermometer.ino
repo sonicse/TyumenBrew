@@ -2,9 +2,13 @@
 
 #include <EEPROM.h>
 
-Thermometer::Thermometer(unsigned char pin) :ds_(pin), Conv_start(false), TemperatureNow(0.0), ScaleTemp(0)
+Thermometer::Thermometer(unsigned char pin)
+:ds_(pin)
+,conv_start_(false)
+,temperature_(0.0)
+,scale_temp_(0)
 {
-    ScaleTemp = EEPROM.read(15);
+    scale_temp_ = EEPROM.read(15);
 }
 
 void Thermometer::Setup()
@@ -17,26 +21,25 @@ void Thermometer::Loop()
 }
 
 // reads the DS18B20 temerature probe
-// return always gTemperatureNow
 float Thermometer::Temperature()
 { 
   ds_.reset();
   ds_.skip();
 
   // start conversion and return
-  if (!Conv_start)
+  if (!conv_start_)
   {
     ds_.write(0x44, 0);
-    Conv_start = true;
-    return TemperatureNow;
+    conv_start_ = true;
+    return temperature_;
   }
   
-  if (Conv_start)
+  if (conv_start_)
   {// check for conversion if it isn't complete return if it is then convert to decimal
     unsigned char busy = ds_.read_bit();
   
     if (busy == 0) {
-      return TemperatureNow;
+      return temperature_;
     }
 
     ds_.reset();
@@ -53,24 +56,23 @@ float Thermometer::Temperature()
       ds_.reset();
       ds_.skip();
       ds_.write(0x44,0);
-      Conv_start = true;
-      return TemperatureNow;
-      //*Fine Routine crc
+      conv_start_ = true;
+      return temperature_;
     }
 
     unsigned int raw = (data_[1] << 8) + data_[0];
     
-    if (ScaleTemp == 0) {
-      TemperatureNow = (raw & 0xFFFC) * 0.0625;
+    if (scale_temp_ == 0) {
+      temperature_ = (raw & 0xFFFC) * 0.0625;
     }
     else {
-      TemperatureNow = ((raw & 0xFFFC) * 0.0625) * 1.8 + 32.0;
+      temperature_ = ((raw & 0xFFFC) * 0.0625) * 1.8 + 32.0;
     }
 
     unsigned char correction = word(EEPROM.read(9), EEPROM.read(10));
-    TemperatureNow = TemperatureNow + (correction/10.0);
+    temperature_ = temperature_ + (correction/10.0);
 
-    Conv_start = false;
-    return TemperatureNow;
+    conv_start_ = false;
+    return temperature_;
   } 
 }

@@ -17,9 +17,9 @@ public:
   
 private:
   OneWire ds_;
-  boolean Conv_start;
-  float TemperatureNow;
-  byte ScaleTemp;
+  boolean conv_start_;
+  float temperature_;
+  byte scale_temp_;
   unsigned char data_[9]; // Sensor Temp with crc version
 };
 

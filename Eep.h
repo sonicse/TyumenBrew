@@ -3,45 +3,30 @@
 
 #include <EEPROM.h>
 
-void r_set(unsigned char& data, int addr)
+/*
+// EEPROM usage:
+// Thermometer - 9,10,15
+// TempRestController - 0,1
+*/
+
+template <class T>
+int EepWrite(int ee, const T& value)
 {
-  data=EEPROM.read(addr);
+   const byte* p = (const byte*)(const void*)&value;
+   int i;
+   for (i = 0; i < sizeof(value); i++)
+       EEPROM.write(ee++, *p++);
+   return i;
 }
 
-void read_set(unsigned char& data, int addr)
+template <class T>
+int EepRead(int ee, T& value)
 {
-  data=word(EEPROM.read(addr),EEPROM.read(addr+1));
-}
-
-void read_set(float& data, int addr)
-{
-  data=word(EEPROM.read(addr),EEPROM.read(addr+1));
-}
-
-void read_set(double& data, int addr)
-{
-  data=word(EEPROM.read(addr),EEPROM.read(addr+1));
-}
-
-void read_set(int& data, int addr)
-{
-  data=word(EEPROM.read(addr),EEPROM.read(addr+1));
-}
-
-void read_set(unsigned int& data, int addr)
-{
-  data=word(EEPROM.read(addr),EEPROM.read(addr+1));
-}
-
-void save_set (int addr, int data)
-{
-  EEPROM.write(addr,highByte(data));
-  EEPROM.write((addr+1),lowByte(data));
-}  
-
-void save_set (int addr, byte data)
-{
-  EEPROM.write(addr,data);
+   byte* p = (byte*)(void*)&value;
+   int i;
+   for (i = 0; i < sizeof(value); i++)
+       *p++ = EEPROM.read(ee++);
+   return i;
 }
 
 /*

@@ -1,18 +1,21 @@
 #include "TempRestHolder.h"
 
 #include "Thermometer.h"
+#include "Eep.h"
 
 namespace {
  const float kDefaultDelta = 0.5;
+ const int kEepAddr = 0; //float
 }
 
 TempRestHolder::TempRestHolder(Thermometer *thermometer, Pin *heater)
 :thermometer_(thermometer)
 ,heater_(heater)
-,temperature_(0.0)
+,temperature_(67.0)
 ,delta_(kDefaultDelta)
 ,state_(false)
 {
+  EepRead(kEepAddr, temperature_);
 }
 
 float TempRestHolder::GetTemperature() const
@@ -24,6 +27,7 @@ void TempRestHolder::SetTemperature(float temperature)
 {
   temperature_ = temperature;
   
+  EepWrite(kEepAddr, temperature_);
   Process();
 }
 
